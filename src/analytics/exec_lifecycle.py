@@ -33,8 +33,12 @@ dates = [
 for i in dates:
 
     with engine_analytics.connect() as conn:
-        conn.execute(sqlalchemy.text(f"DELETE FROM lifecycle WHERE dtRef = date('{i}', '-1 day')"))
-        conn.commit()
+
+        try:
+            conn.execute(sqlalchemy.text(f"DELETE FROM lifecycle WHERE dtRef = date('{i}', '-1 day')"))
+            conn.commit()
+        except Exception as e:
+            print(f"Erro ao deletar dados para a data {i}: {e}")
     
     
     query_format = query.format(date=i)
