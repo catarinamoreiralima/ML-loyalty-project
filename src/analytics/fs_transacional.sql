@@ -22,10 +22,10 @@ tb_agg_transacao AS (
         COUNT(DISTINCT CASE WHEN dtDia >= date('2025-10-01', '-56 day') THEN dtDia END) AS qntAtivacaoD56,
 
         COUNT(DISTINCT IdTransacao) as qntTransacaoVida,
-        COUNT(DISTINCT CASE WHEN IdTransacao >= date('2025-10-01', '-7 day') THEN IdTransacao END) AS qntTransacaoD7,
-        COUNT(DISTINCT CASE WHEN IdTransacao >= date('2025-10-01', '-14 day') THEN IdTransacao END) AS qntTransacaoD14,
-        COUNT(DISTINCT CASE WHEN IdTransacao >= date('2025-10-01', '-28 day') THEN IdTransacao END) AS qntTransacaoD28,
-        COUNT(DISTINCT CASE WHEN IdTransacao >= date('2025-10-01', '-56 day') THEN IdTransacao END) AS qntTransacaoD56,
+        COUNT(DISTINCT CASE WHEN dtDia >= date('2025-10-01', '-7 day') THEN IdTransacao END) AS qntTransacaoD7,
+        COUNT(DISTINCT CASE WHEN dtDia >= date('2025-10-01', '-14 day') THEN IdTransacao END) AS qntTransacaoD14,
+        COUNT(DISTINCT CASE WHEN dtDia >= date('2025-10-01', '-28 day') THEN IdTransacao END) AS qntTransacaoD28,
+        COUNT(DISTINCT CASE WHEN dtDia >= date('2025-10-01', '-56 day') THEN IdTransacao END) AS qntTransacaoD56,
 
         SUM(qtdePontos) as qntPontosVida,
         SUM(CASE WHEN dtDia >= date('2025-10-01', '-7 day') THEN qtdePontos ELSE 0 END) AS qntPontosD7,
