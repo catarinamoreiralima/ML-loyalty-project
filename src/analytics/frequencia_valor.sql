@@ -2,7 +2,7 @@
 WITH tb_freq_valor AS (
 
     SELECT 
-    IdCliente AS idCliente,
+    IdCliente,
     COUNT(DISTINCT substr(DtCriacao, 0, 11)) as frequencia,
     SUM(CASE WHEN QtdePontos > 0 THEN QtdePontos ELSE 0 END) as qntPontosPos 
 
