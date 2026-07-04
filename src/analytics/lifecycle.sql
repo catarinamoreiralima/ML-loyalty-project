@@ -19,15 +19,17 @@ WITH tb_daily AS ( -- seleciona clientes e datas unicas de transacoes
         DISTINCT 
             idCliente,
             substr(DtCriacao, 1, 10) as dtDia
-    FROM transacoes ),
+    FROM transacoes
+    WHERE DtCriacao < '{date}'
+),
 
 tb_idade AS ( -- idade e ultima transacao
 
     SELECT 
         idCliente,
         -- min(dtDia) as dtPrimTransacao,
-        cast(max(julianday('now') - julianday(dtDia)) as int)  as qntDiasPrimTransacao,
-        cast(min(julianday('now') - julianday(dtDia)) as int)  as qntDiasUltTransacao
+        cast(max(julianday('{date}') - julianday(dtDia)) as int)  as qntDiasPrimTransacao,
+        cast(min(julianday('{date}') - julianday(dtDia)) as int)  as qntDiasUltTransacao
 
 
     FROM tb_daily
@@ -46,7 +48,7 @@ tb_rn AS ( -- enumera as transacoes por cliente, ordenando pela data da transaca
 tb_penultima_ativacao AS ( -- seleciona a penultima transacao de cada cliente 2 mais recente
 
     SELECT *,
-    CAST(julianday('now') - julianday(dtDia) as int) as qntDiasPenultimaTransacao 
+    CAST(julianday('{date}') - julianday(dtDia) as int) as qntDiasPenultimaTransacao 
     FROM tb_rn
     WHERE rn = 2
 
@@ -72,6 +74,6 @@ tb_lifecycle AS ( -- calcula
 
 )
 
-SELECT * 
-FROM tb_lifecycle
-WHERE lifecycle LIKE '%RECONQUISTADO%';
+SELECT *,
+    date('{date}', '-1 day') AS dtRef 
+FROM tb_lifecycle;
