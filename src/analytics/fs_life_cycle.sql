@@ -3,16 +3,16 @@ WITH tb_life_cycle_atual AS (
     SELECT IdCliente,
         lifecycle as descLifeCycleAtual,
         frequencia
-    FROM lifecycle
-    WHERE dtRef = '2025-10-01'
+    FROM life_cycle
+    WHERE dtRef = date('{date}', '-1 day')
 ),
 
 tb_life_cycle_D28 AS (
 
 SELECT IdCliente,
     lifecycle as descLifeCycleD28
-FROM lifecycle
-WHERE dtRef = date('2025-10-01', '-29 day')
+FROM life_cycle
+WHERE dtRef = date('{date}', '-29 day')
 ),
 
 
@@ -26,8 +26,8 @@ SELECT idCliente,
 1. * SUM(CASE WHEN lifecycle = '04 - DESENCANTADO' THEN   1 ELSE 0 END) / COUNT(*) AS pctDesencantado,
 1. * SUM(CASE WHEN lifecycle = '01 - CURIOSO' THEN   1 ELSE 0 END) / COUNT(*) AS pctCurioso,
 1. * SUM(CASE WHEN lifecycle = '02 - RECONQUISTADO' THEN   1 ELSE 0 END) / COUNT(*) AS pctReconquistado
-FROM lifecycle
-WHERE dtRef < '2025-10 -01' 
+FROM life_cycle
+WHERE dtRef < date('{date}', '-1 day') 
 GROUP BY idCliente 
 
 ),
@@ -70,11 +70,12 @@ ON t1.descLifeCycleAtual = t4.descLifeCycleAtual
 
 )
 
-SELECT * FROM tb_join
+SELECT date('{date}', '-1 day') AS dtRef,
+       *
+FROM tb_join
 
 
 
 
 
  
-

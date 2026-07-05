@@ -8,9 +8,9 @@ WITH tb_freq_valor AS (
 
     FROM transacoes
 
-    WHERE DtCriacao < '2025-09-01'
+    WHERE DtCriacao < '{date}'
 
-    AND DtCriacao > date('2025-09-01', '-28 day')
+    AND DtCriacao > date('{date}', '-28 day')
 
     GROUP BY IdCliente
     ORDER BY frequencia DESC
