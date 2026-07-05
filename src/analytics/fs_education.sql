@@ -126,6 +126,7 @@ GROUP BY idUsuario
 tb_join AS (
 
     SELECT
+        date('{date}', '-1 day') AS dtRef,
         t3.idTMWCliente AS idCliente,
         t1.cursosCompletos,
         t1.cursosIncompletos,

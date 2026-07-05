@@ -6,6 +6,11 @@ from tqdm import tqdm
 import argparse
 from pathlib import Path
 
+DEFAULT_ORIGIN_BY_TABLE = {
+    "fs_education": "education-platform",
+    "fs_life_cycle": "analytics",
+}
+
 # %%
 
 def import_query(path):
@@ -45,19 +50,6 @@ def exec_query(table, database_origin, database_target, dt_start, dt_end, monthl
         with engine_analytics.connect() as conn:
 
             try:
-                table_exists = conn.execute(
-                    sqlalchemy.text(
-                        """
-                        SELECT 1
-                        FROM sqlite_master
-                        WHERE type = 'table'
-                          AND name = :table
-                        """
-                    ),
-                    {"table": table},
-                ).fetchone()
-
-                if table_exists:
                     conn.execute(sqlalchemy.text(f"DELETE FROM {table} WHERE dtRef = date('{i}', '-1 day')"))
                     conn.commit()
             except Exception as e:
@@ -80,12 +72,12 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--db_origin', default='loyalty-system', 
+    parser.add_argument('--db_origin', '--db-origin', default=None, 
                         choices=['loyalty-system', 'education-platform', 'analytics'], 
                         type=str, 
                         help='Nome do banco de dados de origem')
     
-    parser.add_argument('--db_target', default='analytics', 
+    parser.add_argument('--db_target', '--db-target', default='analytics', 
                         choices=['analytics'], 
                         type=str, 
                         help='Nome do banco de dados de destino')
@@ -96,12 +88,12 @@ def main():
     
     now = datetime.datetime.now().strftime("%Y-%m-%d")
 
-    parser.add_argument('--dt_start', default=now, 
+    parser.add_argument('--dt_start', '--dt-start', default=now, 
                         type=str, 
                         help='Data de início no formato YYYY-MM-DD')
     
 
-    parser.add_argument('--dt_end', default=now, 
+    parser.add_argument('--dt_end', '--dt-end', default=now, 
                         type=str, 
                         help='Data de fim no formato YYYY-MM-DD')
     
@@ -111,9 +103,9 @@ def main():
 
     args = parser.parse_args() 
     
+    table = args.table
     database_origin = args.db_origin
     database_target = args.db_target
-    table = args.table
     dt_start = args.dt_start
     dt_end = args.dt_end
     monthly = args.monthly
