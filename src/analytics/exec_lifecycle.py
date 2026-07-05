@@ -11,7 +11,6 @@ def import_query(path):
 
 
 query = import_query("lifecycle.sql") 
-print(query)
 
  
 #%%
@@ -20,17 +19,26 @@ engine_app  = sqlalchemy.create_engine("sqlite:///../../data/loyalty_system/data
 
 engine_analytics = sqlalchemy.create_engine("sqlite:///../../data/analytics/analytics.db")
 
+#%%
+import datetime 
+from tqdm import tqdm
+ 
 
-dates = [
-    '2024-01-01',
-    '2024-02-01',
-    '2024-03-01',
-    '2024-04-01',
-    '2024-05-01',
-    '2024-06-01'
-]
+def date_range(start_date, end_date):
+    dates = []
+    while start_date <= end_date:
+        dates.append(start_date)
+        dt_start = datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=1)
+        start_date = dt_start.strftime("%Y-%m-%d")
+    return dates
 
-for i in dates:
+dates = date_range("2024-09-01", "2025-10-01")
+
+
+#%%
+
+
+for i in tqdm(dates):
 
     with engine_analytics.connect() as conn:
 
