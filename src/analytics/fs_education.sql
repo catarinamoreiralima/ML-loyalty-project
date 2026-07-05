@@ -7,7 +7,7 @@ WITH tb_usuario_curso AS (
 
 
     FROM cursos_episodios_completos
-    WHERE dtCriacao <= '2025-10-01'
+    WHERE dtCriacao <= '{date}'
     GROUP BY IdUsuario, descSlugCurso
 
 ), 
@@ -87,7 +87,7 @@ SELECT
     MAX(dtRecompensa) AS dtCriacao
 
 FROM recompensas_usuarios
-WHERE dtRecompensa <= '2025-10-01' 
+WHERE dtRecompensa <= '{date}' 
 GROUP BY idUsuario
 
 UNION ALL
@@ -97,7 +97,7 @@ SELECT
     MAX(dtCriacao) AS dtCriacao
 
 FROM cursos_episodios_completos
-WHERE dtCriacao <= '2025-10-01' 
+WHERE dtCriacao <= '{date}' 
 GROUP BY idUsuario
 
 UNION ALL
@@ -107,7 +107,7 @@ SELECT
     max(dtCriacao) AS dtCriacao
 
 FROM habilidades_usuarios
-WHERE dtCriacao <= '2025-10-01' 
+WHERE dtCriacao <= '{date}' 
 GROUP BY idUsuario
 
 ),
@@ -116,7 +116,7 @@ tb_ultima_atividade AS (
 
 SELECT 
     idUsuario,
-    MIN(julianday('2025-10-01') - julianday(dtCriacao)) as qntDiasUltimaAtv
+    MIN(julianday('{date}') - julianday(dtCriacao)) as qntDiasUltimaAtv
 
 
 FROM tb_atividades

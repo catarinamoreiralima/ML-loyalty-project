@@ -1,1 +1,5 @@
 .vscode/
+data/**/*.csv
+data/**/*.db
+data/**/*.sqlite
+data/**/*.sqlite3
